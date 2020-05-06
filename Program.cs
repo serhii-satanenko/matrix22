@@ -5,57 +5,85 @@ namespace matrix2
     class Program
     {
         static void Main(string[] args)
-        {
-            int x = new int();
-            int y = new int();
-            Random rnd = new Random();
-            int sum = new int();
+        {           
+            int a = new int();
+            int b = new int();
+            int answer = new int();
+            Random rnd = new Random();            
 
-            Console.WriteLine($"Введите разменость масива matrix: ");
-            Console.Write("Количество строк:"); x = Convert.ToInt32(Console.ReadLine());
-            Console.Write("Количество столюцов:"); y = Convert.ToInt32(Console.ReadLine());
-
-            var matrix = new int[x, y];
-            //Generate matrix
-            for (int i = 0; i < x; i++)
-            {
-                for (int j = 0; j < y; j++)
+            Console.WriteLine("Введите 1 для ввода масива в ручную и 2 для автоматической генерации масива");
+            Console.Write("1 или 2:");
+            do
+            {                
+                answer = Convert.ToInt32(Console.ReadLine());
+                if (answer != 1 && answer != 2)
                 {
-                    matrix[i, j] = rnd.Next(0, 100);
+                    Console.WriteLine($"Значение не может быть {answer}");
+                    Console.WriteLine("Введите 1 для ввода масива в ручную и 2 для автоматической генерации масива");
+                    Console.Write("1 или 2:");
                 }
-            }
-            //sum
-            for (int i = 0; i < x; i++)
-            {
-                for (int j = 0; j < y; j++)
+            } while (answer != 1 && answer != 2);
+            //enter matrix param
+            Console.WriteLine("Введите размерность матрицы");
+            Console.Write("Введите количество строк:");
+            do
+            {               
+                a = Convert.ToInt32(Console.ReadLine());
+                if (a < 2)
                 {
-                    if (i == j)
-                        sum += matrix[i, j];
+                    Console.WriteLine("Значение не может быть меньше 2");
+                    Console.Write("Введите количество строк:");                    
                 }
-            }
+                else Console.WriteLine("Спасибо");
 
+            } while (a < 2);
 
-            for (int i = 0; i < x; i++)
+            Console.Write("Введите количество столбиков:");
+
+            do
             {
-                for (int j = 0; j < y; j++)
+                b = Convert.ToInt32(Console.ReadLine());
+                if (b < 2)
                 {
-                    if (i == j)
+                    Console.WriteLine("Значение не может быть меньше 2");
+                    Console.Write("Введите количество строк:");
+                }
+                else Console.WriteLine("Спасибо");
+
+            } while (b < 2);
+
+            int[,] matrix = new int[a, b];
+            if (answer == 1)
+            {
+                Console.WriteLine("введите значения");
+                for (int i = 0; i < a; i++)
+                {
+                    for (int j = 0; j < b; j++)
                     {
-                        Console.ForegroundColor = ConsoleColor.Red;
-                        Console.Write($"[{matrix[i, j]}] ");
+                        Console.Write($" [{i}][{j}]: "); 
+                        matrix[i,j] = Convert.ToInt32(Console.ReadLine());
                     }
-                    else if (i != j)
-                    {
-                        Console.ResetColor();
-                        Console.Write($"[{matrix[i, j]}] ");
-                    }
-
-                }
-                Console.WriteLine();
+                }                
             }
 
-            Console.ResetColor();
-            Console.Write($"Сумма главной диагонали = {sum}");
-        }
+            else if (answer == 2)
+            {                
+                for (int i = 0; i < a; i++)
+                {
+                    for (int j = 0; j < b; j++)
+                    {
+                        matrix[i, j] = rnd.Next(0, 100);
+                    }
+                }                
+            }
+            Console.WriteLine();
+            MatrixCalc c = new MatrixCalc(matrix);
+            Console.WriteLine("Масив:");
+            c.PrintMatrix();
+            Console.WriteLine();
+            Console.WriteLine($"Сумма главной диагонали: {c.CalcMatrix()}");
+            Console.ReadLine();      
+        
+        }        
     }
 }
